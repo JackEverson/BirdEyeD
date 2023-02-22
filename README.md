@@ -7,6 +7,11 @@ This is a project aimed at setting up an machine learning wildlife camera that c
 3) Adapt and train the AI further so that it can begin to recognise species of birds. 
 4) +? Using a stockpile of labeled photos attempt to create and train my own AI (This will likely be for the experience rather than a performance improvement)
 
+## Beginning the project
+22FEB2023
 
+To begin this project I have chosen the following hardware:
+- Raspberry Pi 4 (4GB of RAM)
+- Raspberry Pi Camera Module 3 (Wide lens)
 
-(I suspect I will be following core electronics 'object recognition guide with OpenCV' to begin with: https://core-electronics.com.au/guides/object-identify-raspberry-pi/ and https://core-electronics.com.au/projects/backyard-birdcam/)
+I suspect I will be following core electronics 'object recognition guide with OpenCV' to begin with (https://core-electronics.com.au/guides/object-identify-raspberry-pi/ and https://core-electronics.com.au/projects/backyard-birdcam/).  
