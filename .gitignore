@@ -1,2 +1,3 @@
-/saved_images/
-/model_01/data/
+/raspi/saved_images/
+/training_model/data/
+/training_model/cifar_net.pth

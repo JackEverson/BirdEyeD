@@ -51,7 +51,7 @@ class Net(nn.Module):
         super(Net, self).__init__()
         # 3 input image channel, 6 output channels, 5x5 square convolution kernel
         self.conv1 = nn.Conv2d(3, 6, 5)
-        # max pooling over a (2, 2) Window
+        # max pooling over a (2, 2) Window to give a 5X5 image
         self.pool = nn.MaxPool2d(2, 2)
         self.conv2 = nn.Conv2d(6, 16, 5)
         self.fc1 = nn.Linear(16 * 5 * 5, 120)# 5x5 from image dimension
@@ -74,11 +74,6 @@ print(net)
 # defining a loss function and optimizer
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
-
-start = torch.cuda.Event(enable_timing=True)
-end = torch.cuda.Event(enable_timing=True)
-
-start.record()
 
 for epoch in range(2):  # loop over the dataset multiple times
 
@@ -103,11 +98,59 @@ for epoch in range(2):  # loop over the dataset multiple times
                   (epoch + 1, i + 1, running_loss / 2000))
             running_loss = 0.0
 
-# whatever you are timing goes here
-end.record()
-
-# Waits for everything to finish running
-torch.cuda.synchronize()
-
 print('Finished Training')
-print(start.elapsed_time(end))  # milliseconds
+
+# saving Model
+PATH = './cifar_net.pth'
+torch.save(net.state_dict(), PATH)
+print(f"model saved to {PATH}")
+
+# Getting some test examples
+dataiter = iter(testloader)
+images, labels = next(dataiter)
+imshow(torchvision.utils.make_grid(images))
+print('Actual labels: ', ' '.join(f'{classes[labels[j]]:5s}' for j in range(4)))
+
+# loading model
+net = Net()
+net.load_state_dict(torch.load(PATH))
+
+# pushing test examples through model
+outputs = net(images)
+
+_, predicted = torch.max(outputs, 1)
+
+print('Predicted: ', ' '.join(f'{classes[predicted[j]]:5s}' for j in range(4)))
+
+
+correct = 0 
+total = 0
+ 
+# looking to test the models accuracy over the whole test set
+with torch.no_grad():
+    for data in testloader:
+        images, labels = data
+        outputs = net(images)
+        _, predicted = torch.max(outputs.data, 1)
+        total += labels.size(0)
+        correct =+ (predicted == labels).sum().item()
+
+print(f'Accuracy of the network on 10000 test images: {100 * correct // total}')
+
+# testing to see which classes did the best
+correct_pred = {classname: 0 for classname in classes}
+total_pred = {classname: 0 for classname in classes}
+
+with torch.no_grad():
+    for data in testloader:
+        images, labels = data
+        outputs = net(images)
+        _, predictions = torch.max(outputs.data, 1)
+        for label, prediction in zip(labels, predictions):
+            if label == prediction:
+                correct_pred[classes[label]] += 1
+            total_pred[classes[label]] += 1
+
+for classname, correct_count in correct_pred.items():
+    accuracy = 100* float(correct_count) / total_pred[classname]
+    print(f'Accuracy for class: {classname:5s} is {accuracy:.1f}%')
