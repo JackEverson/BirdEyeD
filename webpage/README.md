@@ -1,8 +1,11 @@
+# General requirements:
+SQLite3
 
-requirements for webapp:
-
-Flask
+# python requirements for web app:
+flask
+flask-session
 OpenCV2
 SQLAlchemy
 Werkzeug
+
 
