@@ -8,7 +8,7 @@ def gen_frames():
     '''
     for ip camera use - rtsp://username:password@ip_address:554/user=username_password='password'_channel=channel_number_stream=0.sdp' for local webcam use cv2.VideoCapture(0)
     '''
-    time.sleep(0.1) # giving openCV some time to work itself out as two programs can't use the camera at once
+    time.sleep(0.2) # giving openCV some time to work itself out as two programs can't use the camera at once
     camera = cv2.VideoCapture(0)
     while True:
         success, frame = camera.read()  # read the camera frame
@@ -22,7 +22,7 @@ def gen_frames():
           
           
 def capture_image():
-    time.sleep(0.1) # giving openCV some time to work itself out as two programs can't use the camera at once
+    time.sleep(0.2) # giving openCV some time to work itself out as two programs can't use the camera at once
     camera = cv2.VideoCapture(0)
     success,img = camera.read()
     if not success:
