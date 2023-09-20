@@ -1,7 +1,7 @@
 {% extends "layout.html" %} 
 
 {% block title %} 
-Home 
+Live feed
 {% endblock %} 
 
 {% block main %} 
@@ -10,7 +10,7 @@ Home
         <div class="row">
             <div class="col-lg-8  offset-lg-2">
                 <h3 class="mt-5">Live Streaming</h3>
-                <img src="{{ url_for('video_feed') }}" width="50%">
+                <img src="{{ url_for('video_feed') }}" width="100%">
             </div>
         </div>
     </div>
