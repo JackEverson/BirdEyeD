@@ -1,16 +1,14 @@
-import cv2
-import os
-import sys
+import cv2, datetime, os, sys, time
 
 from flask import redirect, session
 from functools import wraps
-import flask_session
 from werkzeug.security import check_password_hash 
 
 def gen_frames():  
     '''
     for ip camera use - rtsp://username:password@ip_address:554/user=username_password='password'_channel=channel_number_stream=0.sdp' for local webcam use cv2.VideoCapture(0)
     '''
+    time.sleep(0.1) # giving openCV some time to work itself out as two programs can't use the camera at once
     camera = cv2.VideoCapture(0)
     while True:
         success, frame = camera.read()  # read the camera frame
@@ -21,6 +19,47 @@ def gen_frames():
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
+          
+          
+def capture_image():
+    time.sleep(0.1) # giving openCV some time to work itself out as two programs can't use the camera at once
+    camera = cv2.VideoCapture(0)
+    success,img = camera.read()
+    if not success:
+        return "error"
+    else:
+        now = datetime.datetime.now()
+        now = now.strftime("%Y-%m-%d-%H-%M-%S")
+        image_name = now + ".png"
+        image_path = os.path.join("./images/", image_name)
+        cv2.imwrite(image_path, img)
+        return f"image saved to {image_path}"
+
+def list_cameras():
+    """
+    Test the ports and returns a tuple with the available ports and the ones that are working.
+    """
+    non_working_ports = []
+    dev_port = 0
+    working_ports = []
+    available_ports = []
+    while len(non_working_ports) < 6: # if there are more than 5 non working ports stop the testing. 
+        camera = cv2.VideoCapture(dev_port)
+        if not camera.isOpened():
+            non_working_ports.append(dev_port)
+            print("Port %s is not working." %dev_port)
+        else:
+            is_reading, img = camera.read()
+            w = camera.get(3)
+            h = camera.get(4)
+            if is_reading:
+                print("Port %s is working and reads images (%s x %s)" %(dev_port,h,w))
+                working_ports.append(dev_port)
+            else:
+                print("Port %s for camera ( %s x %s) is present but does not reads." %(dev_port,h,w))
+                available_ports.append(dev_port)
+        dev_port +=1
+    return available_ports,working_ports,non_working_ports
 
  
 def login_required(f):

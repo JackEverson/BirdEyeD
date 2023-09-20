@@ -6,13 +6,15 @@ Home
 
 {% block main %} 
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8  offset-lg-2">
-                <h3 class="mt-5">Live Streaming</h3>
-                <img src="{{ url_for('video_feed') }}" width="100%">
+    <a class="nav-link" href="/camera_view">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8  offset-lg-2">
+                    <h3 class="mt-5">Live Streaming</h3>
+                    <img src="{{ url_for('video_feed') }}" width="30%">
+                </div>
             </div>
         </div>
-    </div>
+    </a>
 </body>
 {% endblock %}

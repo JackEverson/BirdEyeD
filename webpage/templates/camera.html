@@ -1,10 +1,5 @@
-{% extends "layout.html" %} 
+{% extends "layout.html" %} {% block title %} Camera {{ camera_number }} {% endblock %} {% block main %}
 
-{% block title %} 
-Live feed
-{% endblock %} 
-
-{% block main %} 
 <body>
     <div class="container">
         <div class="row">
@@ -14,5 +9,18 @@ Live feed
             </div>
         </div>
     </div>
+    <form action="/capture" method="post">
+    <div>
+        <button class="btn btn-primary" type="submit" >
+            Capture image
+        </button>
+    </div>
+    </form>
 </body>
+    <div>
+        <h3>
+            {{ message }}
+        </h3>
+    </div>
+
 {% endblock %}
