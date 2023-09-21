@@ -9,7 +9,9 @@ def gen_frames():
     for ip camera use - rtsp://username:password@ip_address:554/user=username_password='password'_channel=channel_number_stream=0.sdp' for local webcam use cv2.VideoCapture(0)
     '''
     time.sleep(0.2) # giving openCV some time to work itself out as two programs can't use the camera at once
-    camera = cv2.VideoCapture(0)
+    _, working_camera_list, _ = list_cameras()
+    camera_number = working_camera_list[0]
+    camera = cv2.VideoCapture(camera_number)    
     while True:
         success, frame = camera.read()  # read the camera frame
         if not success:
@@ -19,11 +21,13 @@ def gen_frames():
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
-          
-          
+
+
 def capture_image():
     time.sleep(0.2) # giving openCV some time to work itself out as two programs can't use the camera at once
-    camera = cv2.VideoCapture(0)
+    _, working_camera_list, _ = list_cameras()
+    camera_number = working_camera_list[0]
+    camera = cv2.VideoCapture(camera_number)
     success,img = camera.read()
     if not success:
         return "error"
@@ -61,7 +65,7 @@ def list_cameras():
         dev_port +=1
     return available_ports,working_ports,non_working_ports
 
- 
+
 def login_required(f):
     """
     Decorate routes to require login.
