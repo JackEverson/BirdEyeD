@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Settings 
+{% endblock %}
+
+{% block main %}
+<div>
+    <h3>
+        {{ message }}
+    </h3>
+</div>
+
+<h3>
+    Change Password
+</h3>
+<form action="/change_password" method="post">
+    <div class="mb-3">
+        <input class="form-control mx-auto w-auto" id="qpassword" name="qpassword" placeholder="current password" type="password" required>
+    </div>
+    <div class="mb-3">
+        <input class="form-control mx-auto w-auto" id="npassword" name="npassword" placeholder="new password" type="password" required>
+    </div>
+    <div class="mb-3">
+        <input class="form-control mx-auto w-auto" id="confirm" name="confirm" placeholder="confirm password" type="password" required>
+    </div>
+    <button class="btn btn-primary" type="submit">submit password change</button>
+</form>
+
+<h3>
+    Change selected camera 
+</h3>
+    {% for camera in camera_list %}
+    <form action="/change_camera" method="post">
+        <button class="btn btn-primary" name="cam_button" type="submit" value={{ camera }}>camera: {{ camera }}</button>
+    </form>
+    {% endfor %}
+
+{% endblock %}

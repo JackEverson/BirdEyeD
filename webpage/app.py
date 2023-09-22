@@ -15,15 +15,24 @@ app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-           
+
+
 # user database setup
 helpers.setup_db()
-    
+
+# detecting available_cameras and selecting the first one
+available_camera_count, available_cameras, _ = helpers.list_cameras()
+print(f"Cameras available: {available_camera_count}")
+print(f"list of cameras available by number: {available_cameras}")
+running_camera = available_cameras[1]
+
+
 @app.route("/")
 @login_required
 def index():
     id = session.get("user_id")
     return render_template("index.html")
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -33,12 +42,12 @@ def login():
         quser_name = request.form.get("username")
         qpassword =  request.form.get("password")
 
-        user = helpers.check_deets(quser_name, qpassword)
+        user = helpers.check_deets_byname(quser_name, qpassword)
 
         if user == None:
             error = "Username not on record"
             return render_template("login.html", error=error)
-        
+
         if user == "error":
             error = "Username and/or Password incorrect"
             return render_template("login.html", error=error)
@@ -60,25 +69,56 @@ def logout():
 @app.route("/camera_view")
 @login_required
 def camera_view():
-    #_, available_cameras, _ = helpers.list_cameras()
-    #print(available_cameras)
-    #camera_number = available_cameras[0]
-    camera_number = 0
-    return render_template("camera.html", camera_number=camera_number)
+    return render_template("camera.html", camera_number=running_camera)
 
 
 @app.route("/video")
 @login_required
 def video_feed():
-    #_, available_cameras, _ = helpers.list_cameras()
-    return Response(helpers.gen_frames(), mimetype="multipart/x-mixed-replace; boundary=frame")
+    return Response(helpers.gen_frames(running_camera), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 @app.route("/capture", methods=["POST"])
 @login_required
 def capture():
-    message = helpers.capture_image()
-    camera_number = 0
-    return render_template("camera.html", camera_number=camera_number, message=message)
+    message = helpers.capture_image(running_camera)
+    return render_template("camera.html", camera_number=running_camera, message=message)
+
+
+@app.route("/settings")
+@login_required
+def settings():
+    global available_camera_count, available_cameras
+    available_camera_count, available_cameras, _ = helpers.list_cameras()
+    return render_template("settings.html", camera_list=available_cameras, current_camera=running_camera)
+
+
+@app.route("/change_password", methods=["POST"])
+@login_required
+def change_password():
+    qpassword = request.form.get("qpassword")
+    npassword = request.form.get("npassword") 
+    confirm = request.form.get("confirm") 
+    qid = session.get("user_id")
+
+    user = helpers.check_deets_byid(qid, qpassword)
+    if user == "error":
+        message = user
+    else:
+        print("User: ")
+        print(user)
+        message = "test success"
+    return render_template("settings.html", camera_list=available_cameras, current_camera=running_camera, message=message)
+
+
+@app.route("/change_camera", methods=["POST"])
+@login_required
+def change_camera():
+    new_cam = request.form['cam_button']
+    global running_camera 
+    running_camera = int(new_cam)
+    message = f"Camera {running_camera} has now been selected"
+    return render_template("settings.html", camera_list=available_cameras, current_camera=running_camera, message=message)
+
 
 if __name__ == "__main__":
     app.run(use_reloader=True)

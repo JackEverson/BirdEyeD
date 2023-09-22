@@ -1,20 +1,21 @@
-import cv2, datetime, os, sys, time
+import cv2, datetime, os, time
 
 from flask import redirect, session
 from functools import wraps
 from werkzeug.security import check_password_hash 
 
-def gen_frames():  
+def gen_frames(selected_camera_number):  
     '''
+    produce frames for web page using the currently selected camera
     for ip camera use - rtsp://username:password@ip_address:554/user=username_password='password'_channel=channel_number_stream=0.sdp' for local webcam use cv2.VideoCapture(0)
     '''
     time.sleep(0.2) # giving openCV some time to work itself out as two programs can't use the camera at once
-    _, working_camera_list, _ = list_cameras()
-    camera_number = working_camera_list[0]
-    camera = cv2.VideoCapture(camera_number)    
+    camera = cv2.VideoCapture(selected_camera_number)    
     while True:
         success, frame = camera.read()  # read the camera frame
         if not success:
+            print("error with camera feed, no frame detected")
+            print(f"selected camera is {selected_camera_number}")
             break
         else:
             ret, buffer = cv2.imencode('.jpg', frame)
@@ -23,11 +24,12 @@ def gen_frames():
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
 
 
-def capture_image():
+def capture_image(selected_camera_number):
+    ''' 
+    capture an image of the what the current camera is viewing
+    '''
     time.sleep(0.2) # giving openCV some time to work itself out as two programs can't use the camera at once
-    _, working_camera_list, _ = list_cameras()
-    camera_number = working_camera_list[0]
-    camera = cv2.VideoCapture(camera_number)
+    camera = cv2.VideoCapture(selected_camera_number)
     success,img = camera.read()
     if not success:
         return "error"
@@ -114,19 +116,30 @@ def setup_db():
     if create_db:
         print("User database not found, creating new database")
         with Session(engine) as session:
-            sushi = User(
-                    user_name="sushi",
-                    hash="pbkdf2:sha256:600000$ImcpaqcSmppVQOVD$b1967fe4454e10e3d693e7854c9d6828d7c5f5d05dbebdbba65602e8bba1800c"
-                    )
+            sushi = User(user_name="sushi", hash="pbkdf2:sha256:600000$ImcpaqcSmppVQOVD$b1967fe4454e10e3d693e7854c9d6828d7c5f5d05dbebdbba65602e8bba1800c")
             session.add_all([sushi])
             session.commit()
             print("database has been created, please ensure the default password is changed imediately")
     else: 
         print("User database has been found, database ready")
 
-def check_deets(qusername, qpassword):
+def check_deets_byname(qusername, qpassword):
     engine, User = establish_ORM()
     stmt = select(User).where(User.user_name == qusername)
+    with Session(engine) as session:
+        user = session.execute(stmt).fetchone()[0]
+    if user == None:
+        return "error"
+    correct = check_password_hash(user.hash, qpassword)
+    if correct:
+        return user
+    else:
+        return "error"
+
+
+def check_deets_byid(qid, qpassword):
+    engine, User = establish_ORM()
+    stmt = select(User).where(User.id == qid)
     with Session(engine) as session:
         user = session.execute(stmt).fetchone()[0]
     if user == None:
