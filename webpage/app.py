@@ -54,6 +54,7 @@ def login():
 
 
         session["user_id"] = user.id
+        print(session["user_id"])
         return redirect("/")
 
     else: # if GET method
@@ -103,10 +104,10 @@ def change_password():
     user = helpers.check_deets_byid(qid, qpassword)
     if user == "error":
         message = user
+    elif confirm != npassword:
+        message = "new password does not match the confirmation password"
     else:
-        print("User: ")
-        print(user)
-        message = "test success"
+        message = helpers.new_pass(qid, qpassword)
     return render_template("settings.html", camera_list=available_cameras, current_camera=running_camera, message=message)
 
 

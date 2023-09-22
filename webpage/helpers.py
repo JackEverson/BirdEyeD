@@ -1,8 +1,9 @@
 import cv2, datetime, os, time
+import flask
 
-from flask import redirect, session
+from flask import redirect
 from functools import wraps
-from werkzeug.security import check_password_hash 
+from werkzeug.security import check_password_hash, generate_password_hash 
 
 def gen_frames(selected_camera_number):  
     '''
@@ -77,15 +78,15 @@ def login_required(f):
 
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if session.get("user_id") is None:
+        if flask.session.get("user_id") is None:
             return redirect("/login")
         return f(*args, **kwargs)
 
     return decorated_function
 
 # SQL and SQLAlchemy code 
-from sqlalchemy import Integer, create_engine, engine, insert, String, Column, select
-from sqlalchemy.orm import Mapped, Session, declarative_base
+from sqlalchemy import Integer, create_engine, insert, String, Column, select
+from sqlalchemy.orm import Session, declarative_base
 
 def establish_ORM():
     Base = declarative_base()
@@ -142,10 +143,27 @@ def check_deets_byid(qid, qpassword):
     stmt = select(User).where(User.id == qid)
     with Session(engine) as session:
         user = session.execute(stmt).fetchone()[0]
-    if user == None:
-        return "error"
-    correct = check_password_hash(user.hash, qpassword)
-    if correct:
-        return user
-    else:
-        return "error"
+        if user == None:
+            return "Error: user not found"
+        correct = check_password_hash(user.hash, qpassword)
+        if correct:
+            return user
+        else:
+            return "Error: password incorrect"
+
+
+def new_pass(userid, newpassword):
+    ''' 
+    save a new password to the bird.db database.
+    '''
+    engine, User = establish_ORM()
+    newhash = generate_password_hash(newpassword)
+
+    with Session(engine) as session:
+        session.query(User).where(id == userid).update({"hash": newhash})
+        session.commit()
+
+    return "Password changed successfully"
+
+
+
