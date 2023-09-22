@@ -24,7 +24,7 @@ helpers.setup_db()
 available_camera_count, available_cameras, _ = helpers.list_cameras()
 print(f"Cameras available: {available_camera_count}")
 print(f"list of cameras available by number: {available_cameras}")
-running_camera = available_cameras[1]
+running_camera = available_cameras[0]
 
 
 @app.route("/")
