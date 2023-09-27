@@ -85,7 +85,7 @@ def login_required(f):
     return decorated_function
 
 # SQL and SQLAlchemy code 
-from sqlalchemy import Integer, create_engine, insert, String, Column, select
+from sqlalchemy import Integer, create_engine, insert, String, Column, select, update
 from sqlalchemy.orm import Session, declarative_base
 
 def establish_ORM():
@@ -146,6 +146,7 @@ def check_deets_byid(qid, qpassword):
         if user == None:
             return "Error: user not found"
         correct = check_password_hash(user.hash, qpassword)
+        print(f"user.hash: {user.hash}")
         if correct:
             return user
         else:
@@ -159,9 +160,23 @@ def new_pass(userid, newpassword):
     engine, User = establish_ORM()
     newhash = generate_password_hash(newpassword)
 
+    print(f"userid: {userid}")
+    print(f"newpassword: {newpassword}")
+
     with Session(engine) as session:
-        session.query(User).where(id == userid).update({"hash": newhash})
+        stmt = select(User).where(User.id == userid)
+        selected_user = session.scalars(stmt).one()
+
+        print(f"ORM id: {selected_user.id}")
+        print(f"ORM name: {selected_user.user_name}")
+        print(f"ORM hash: {selected_user.hash}")
+
+        selected_user.hash = newhash
         session.commit()
+
+        print(f"ORM id: {selected_user.id}")
+        print(f"ORM name: {selected_user.user_name}")
+        print(f"ORM hash: {selected_user.hash}")
 
     return "Password changed successfully"
 

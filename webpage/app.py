@@ -107,7 +107,7 @@ def change_password():
     elif confirm != npassword:
         message = "new password does not match the confirmation password"
     else:
-        message = helpers.new_pass(qid, qpassword)
+        message = helpers.new_pass(qid, npassword)
     return render_template("settings.html", camera_list=available_cameras, current_camera=running_camera, message=message)
 
 
