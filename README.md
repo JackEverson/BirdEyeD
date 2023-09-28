@@ -13,8 +13,8 @@ This is a project that utilises Python, OpenCV2, and SQLite3 to allow for the se
 This is project is inspired by [BirdNET](https://birdnet.cornell.edu) and the implementation to a Raspberry Pi done by [Core Electronics](https://core-electronics.com.au/projects/bird-calls-raspberry-pi/). 
 This branch of the project has been submitted as the final assessment of Harvard's CS50 course. I intend to work on this project further and make it AI capable so I am able to collect photo's of birds without having to manually push a button. Follow the main branch [here](https://github.com/JackEverson/bird_eyeD).
 
-# Running BirdEyeD
-This project was targeted to run on a Raspberry Pi 4 with 4GB of RAM and a 64GB microsd card. The operating system is Raspberry Pi OS Lite 11 "bullseye". I chose to buy a cheap webcamera for this project but I believe the official Raspberry Pi camera Module v2 should work to (PLEASE NOTE: the Raspberry Pi Camera Module v3 is not compatible with OpenCV2 which this project depends on). Testing was also done with my laptop running Ubuntu v22.04.3 LTS (Jammy Jellyfish) using its build in camera (and the purchased webcamera) and everything worked correctly.
+# Setup of BirdEyeD
+This project was targeted to run on a Raspberry Pi 4 with 4GB of RAM and a 64GB microsd card (total space occupied after everything was up and running was about 3.4GB, I just wanted to take a lot of pictures). The operating system is Raspberry Pi OS Lite 11 "bullseye". I chose to buy a cheap webcamera for this project but I believe the official Raspberry Pi camera Module v2 should work to (PLEASE NOTE: the Raspberry Pi Camera Module v3 is not compatible with OpenCV2 which this project depends on). Testing was also done with my laptop running Ubuntu v22.04.3 LTS (Jammy Jellyfish) using its build in camera (and the purchased webcamera) and everything worked correctly.
 
 ## Setup and requirements
 First thing you should always do after a fresh install is to run the command:
@@ -49,23 +49,36 @@ There are also a number of Python libraries that need to be installed. We first 
 Then we need the following libraries:
 - Flask
 - Flask-session
-- OpenCV2
 - SQLAlchemy
 - Werkzeug
 
 They can all be installed with the command:
 
-`sudo pip install Flask Flask-Session opencv-python SQLAlchemy Werkzeug`
+`sudo pip install Flask Flask-Session SQLAlchemy Werkzeug`
 
 ### Cloning respository 
 To clone the respository you just need to run the following command:
 
 `git clone -b cs50 https://github.com/JackEverson/BirdEyeD.git`
 
-From there you can change into the project directory and should be able to run the web page with the command (where 0.0.0.0 is your local IP address):
+From there you can change into the project directory and should be able to run the web page with the command (where 0.0.0.0 is your local IP address, I usually find this using `ifconfig` command):
 
 `flask run -h 0.0.0.0`
 
-A webpage should now be available at that IP address. Once open you can login with username "sushi" and password "birdeyed". 
+
+# Running BirdEyeD 
+
+A webpage should now be available at the IP address that was used to run flask. Once open you can login with username "sushi" and password "birdeyed". 
 
 PLEASE NOTE: This password should be changed immediately through the settings menu. While it is unlikely (depending who is on your local network) for the webpage to be hacked you should be aware that while this program is running you are essentially offering any camera attached to this computer to your local network. Please be aware of this while operating.  
+
+The settings menu can be accessed by pushing the three bars in the top right corner of the webpage and then selecting Settings. If you have multiple camera's attached you can also change your camera selection from this menu. 
+
+If you select the three bars in the top right corner and then select Video Feed you will see the current feed from the selected camera. You can take a photo at anytime by selecting the 'Capture image' button (this should autofocus so you can also just hit enter). Photo's are stored in the images directory in the project folder and will be named after the date and time they were taken.
+
+# Trouble shooting
+
+Just a few points about the program that may help:
+- The default username is "sushi" and the default password is "birdeyed"
+- If no camera is attached the program will fail to run as OpenCV will return an empty array
+- images will be saved in the images directory in the project folder
