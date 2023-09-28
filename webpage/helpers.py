@@ -159,25 +159,11 @@ def new_pass(userid, newpassword):
     '''
     engine, User = establish_ORM()
     newhash = generate_password_hash(newpassword)
-
-    print(f"userid: {userid}")
-    print(f"newpassword: {newpassword}")
-
     with Session(engine) as session:
         stmt = select(User).where(User.id == userid)
         selected_user = session.scalars(stmt).one()
-
-        print(f"ORM id: {selected_user.id}")
-        print(f"ORM name: {selected_user.user_name}")
-        print(f"ORM hash: {selected_user.hash}")
-
         selected_user.hash = newhash
         session.commit()
-
-        print(f"ORM id: {selected_user.id}")
-        print(f"ORM name: {selected_user.user_name}")
-        print(f"ORM hash: {selected_user.hash}")
-
     return "Password changed successfully"
 
 
