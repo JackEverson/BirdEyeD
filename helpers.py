@@ -117,7 +117,7 @@ def setup_db():
     if create_db:
         print("User database not found, creating new database")
         with Session(engine) as session:
-            sushi = User(user_name="sushi", hash="pbkdf2:sha256:600000$ImcpaqcSmppVQOVD$b1967fe4454e10e3d693e7854c9d6828d7c5f5d05dbebdbba65602e8bba1800c")
+            sushi = User(user_name="sushi", hash="pbkdf2:sha256:600000$hXyEIMeIonIa0zMW$bfd20ef7a6673179e0a62bb94e6d383b686da5221069023a47c01245538629ac")
             session.add_all([sushi])
             session.commit()
             print("database has been created, please ensure the default password is changed imediately")
