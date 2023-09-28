@@ -6,6 +6,8 @@
 ## Save Images
 ![King_parrot_saved](https://github.com/JackEverson/bird_eyeD/assets/111256162/ce94735e-bd42-492f-b6fb-817e50ac2dba)
 
+---
+
 This is a simple web dev and machine learning project that is being setup to collect photos of birds. The intention is to use a predefined model (for example MobileNet v2) or to train a model with a already existing data set (for example cifar10) that can generally recognise birds. From there I will set up a Raspberry Pi with a camera to collect bird photo's. These photo's will then be used to train a new network that can begin to recognise species of birds more specifically.
 
 The steps towards achieving this goal are:
