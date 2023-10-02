@@ -26,10 +26,14 @@ Settings
     </div>
     <button class="btn btn-primary" type="submit">submit password change</button>
 </form>
+<br><br><br>
 
 <h3>
     Change selected camera 
 </h3>
+<h5>
+    Camera selected is : {{ current_camera }}
+</h5>
     {% for camera in camera_list %}
     <form action="/change_camera" method="post">
         <button class="btn btn-primary" name="cam_button" type="submit" value={{ camera }}>camera: {{ camera }}</button>
