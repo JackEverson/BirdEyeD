@@ -6,7 +6,6 @@
 ## Save Images
 ![King_parrot_saved](https://github.com/JackEverson/bird_eyeD/assets/111256162/ce94735e-bd42-492f-b6fb-817e50ac2dba)
 
-
 # Welcome to BirdEyeD! 
 This is a project that utilises Python, OpenCV2, and SQLite3 to host a local webpage with a video stream so that images of birds can be captured. The intention is to have it running on small computer (in my case I am using a Raspberry Pi) with an attached webcamera. 
 
