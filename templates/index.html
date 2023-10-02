@@ -1,20 +1,30 @@
 {% extends "layout.html" %} 
-
 {% block title %} 
-Home 
+Camera {{ camera_number }} 
 {% endblock %} 
+{% block main %}
 
-{% block main %} 
 <body>
-    <a class="nav-link" href="/camera_view">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8  offset-lg-2">
-                    <h3 class="mt-5">Live Streaming</h3>
-                    <img src="{{ url_for('video_feed') }}" width="30%">
-                </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8  offset-lg-2">
+                <h3 class="mt-5">Live Streaming</h3>
+                <img src="{{ url_for('video_feed') }}" width="100%">
             </div>
         </div>
-    </a>
+    </div>
+    <form action="/capture" method="post">
+    <div>
+        <button class="btn btn-primary" type="submit" autofocus>
+            Capture image
+        </button>
+    </div>
+    </form>
 </body>
+    <div>
+        <h3>
+            {{ message }}
+        </h3>
+    </div>
+
 {% endblock %}

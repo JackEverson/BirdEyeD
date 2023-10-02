@@ -1,4 +1,3 @@
-
 import helpers
 
 a, b, c = helpers.list_cameras()

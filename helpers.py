@@ -5,18 +5,15 @@ from flask import redirect
 from functools import wraps
 from werkzeug.security import check_password_hash, generate_password_hash 
 
-def gen_frames(selected_camera_number):  
+def gen_frames(camera):  
     '''
     produce frames for web page using the currently selected camera
     for ip camera use - rtsp://username:password@ip_address:554/user=username_password='password'_channel=channel_number_stream=0.sdp' for local webcam use cv2.VideoCapture(0)
     '''
-    time.sleep(0.2) # giving openCV some time to work itself out as two programs can't use the camera at once
-    camera = cv2.VideoCapture(selected_camera_number)    
     while True:
         success, frame = camera.read()  # read the camera frame
         if not success:
             print("error with camera feed, no frame detected")
-            print(f"selected camera is {selected_camera_number}")
             break
         else:
             ret, buffer = cv2.imencode('.jpg', frame)
@@ -25,12 +22,11 @@ def gen_frames(selected_camera_number):
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
 
 
-def capture_image(selected_camera_number):
+def capture_image(camera):
     ''' 
     capture an image of the what the current camera is viewing
     '''
     time.sleep(0.2) # giving openCV some time to work itself out as two programs can't use the camera at once
-    camera = cv2.VideoCapture(selected_camera_number)
     success,img = camera.read()
     if not success:
         return "error"
@@ -42,6 +38,7 @@ def capture_image(selected_camera_number):
         cv2.imwrite(image_path, img)
         return f"image saved to {image_path}"
 
+
 def list_cameras():
     """
     Test the ports and returns a tuple with the available ports and the ones that are working.
@@ -51,7 +48,7 @@ def list_cameras():
     working_ports = []
     available_ports = 0
     while len(non_working_ports) < 6: # if there are more than 5 non working ports stop the testing. 
-        camera = cv2.VideoCapture(dev_port)
+        camera = cv2.VideoCapture(dev_port)    
         if not camera.isOpened():
             non_working_ports.append(dev_port)
             print("Port %s is not working." %dev_port)
@@ -66,6 +63,7 @@ def list_cameras():
             else:
                 print("Port %s for camera ( %s x %s) is present but does not reads." %(dev_port,h,w))
         dev_port +=1
+    camera.release()
     return available_ports,working_ports,non_working_ports
 
 
