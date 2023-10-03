@@ -9,9 +9,12 @@
 # Welcome to BirdEyeD! 
 This is a project that utilises Python, OpenCV2, and SQLite3 to host a local webpage with a video stream so that images of birds can be captured. The intention is to have it running on small computer (in my case I am using a Raspberry Pi) with an attached webcamera. 
 
-This is project is inspired by [BirdNET](https://birdnet.cornell.edu) and the implementation to a Raspberry Pi done by [Core Electronics](https://core-electronics.com.au/projects/bird-calls-raspberry-pi/). 
-I wanted to use a Raspberry Pi and a cheap webcamera to make the project easily accessable and affordable.
+This is project is inspired by [BirdNET](https://birdnet.cornell.edu) and the implementation to a Raspberry Pi done by [Core Electronics](https://core-electronics.com.au/projects/bird-calls-raspberry-pi/). I wanted to use a Raspberry Pi and a cheap webcamera to make the project easily accessable and affordable.
+
+#### CS50
 This branch of the project has been submitted as the final assessment of Harvard's CS50 course. I intend to work on this project further and make it AI capable so I am able to collect photo's of birds without having to manually push a button. Follow the main branch [here](https://github.com/JackEverson/bird_eyeD).
+
+#### Video Demo: 
 
 # Setup of BirdEyeD
 This project was targeted to run on a Raspberry Pi 4 with 4GB of RAM and a 64GB microsd card (total space occupied after everything was up and running was about 3.4GB, I just wanted to take a lot of pictures). The operating system is Raspberry Pi OS 11 "bullseye". I chose to buy a cheap webcamera for this project but I believe the official Raspberry Pi camera Module v2 should work to (PLEASE NOTE: the Raspberry Pi Camera Module v3 is not compatible with OpenCV2 which this project depends on). Testing was also done with my laptop running Ubuntu v22.04.3 LTS (Jammy Jellyfish) using its build in camera (and the purchased webcamera) and everything worked correctly.
