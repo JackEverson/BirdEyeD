@@ -55,14 +55,27 @@ They can all be installed with the command:
 
 `sudo pip install Flask Flask-Session SQLAlchemy Werkzeug`
 
+or with conda:
+
+`conda install -c anaconda flask`
+
+`conda install -c conda-forge flask-session`
+
+`conda install -c anaconda numpy`
+
+`conda install -c anaconda sqlalchemy`
+
+`conda install -c conda-forge werkzeug`
+
+
 ### Cloning respository 
 To clone the respository you just need to run the following command:
 
 `git clone -b cs50 https://github.com/JackEverson/BirdEyeD.git`
 
-From there you can change into the project directory and should be able to run the web page with the command (where 0.0.0.0 is your local IP address, I usually find this using `ifconfig` command):
+From there you can change into the project directory and should be able to run the web page with the command:
 
-`flask run -h 0.0.0.0`
+`flask run -h <ip_address_of_device>`
 
 
 # Running BirdEyeD 
@@ -81,3 +94,10 @@ Just a few points about the program that may help:
 - The default username is "sushi" and the default password is "birdeyed"
 - If no camera is attached the program will fail to run as OpenCV will return an empty array
 - images will be saved in the images directory in the project folder
+
+# Need to add to documentation
+- Quick start guide
+Packages for AI 
+- Pytorch?
+- conda install -c conda-forge matplotlib
+- conda install -c anaconda requests

@@ -2,3 +2,5 @@
 /bird.db
 /__pycache__
 /flask_session
+/training_model/data/
+/training_model/cifar_net.pth
