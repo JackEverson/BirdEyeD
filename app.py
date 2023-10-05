@@ -8,7 +8,10 @@ from helpers import login_required
 from logging import debug
 from flask import Flask, redirect, render_template, Response, request, session
 from flask_session import Session
-from werkzeug.security import check_password_hash 
+from werkzeug.security import check_password_hash
+from yolo.yolo import load_model
+
+from yolo.yolo import load_model, yolo_run 
 
 #Initialize the Flask app
 app = Flask(__name__)
@@ -26,6 +29,8 @@ if not os.path.isdir("./images"):
     os.makedirs("./images/")
     print("no images directory detected. New images file has been created")
 
+# setting up yolo network
+net = load_model()
 
 # creating global variables
 global camera
@@ -85,13 +90,23 @@ def logout():
 @app.route("/video")
 @login_required
 def video_feed():
-    return Response(helpers.gen_frames(camera), mimetype="multipart/x-mixed-replace; boundary=frame")
+    return Response(helpers.gen_frames(camera, True, net), mimetype="multipart/x-mixed-replace; boundary=frame")
+
 
 @app.route("/capture", methods=["POST"])
 @login_required
 def capture():
     message = helpers.capture_image(camera)
     return render_template("index.html", camera_number=selected_camera_number, message=message)
+
+
+@app.route("/yolo", methods=["GET"])
+@login_required
+def yolo():
+    return Response(helpers.gen_frames(camera, True, net), mimetype="multipart/x-mixed-replace; boundary=frame")
+    
+
+
 
 
 @app.route("/settings")

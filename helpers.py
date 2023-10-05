@@ -4,8 +4,9 @@ import flask
 from flask import redirect
 from functools import wraps
 from werkzeug.security import check_password_hash, generate_password_hash 
+from yolo.yolo import yolo_run
 
-def gen_frames(camera):  
+def gen_frames(camera, activate_ai, net):  
     '''
     produce frames for web page using the currently selected camera
     for ip camera use - rtsp://username:password@ip_address:554/user=username_password='password'_channel=channel_number_stream=0.sdp' for local webcam use cv2.VideoCapture(0)
@@ -16,6 +17,8 @@ def gen_frames(camera):
             print("error with camera feed, no frame detected")
             break
         else:
+            if activate_ai:
+                frame = yolo_run(frame, net)
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
