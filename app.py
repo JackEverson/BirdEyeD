@@ -2,6 +2,8 @@
 import os, sys
 
 import cv2
+from sqlalchemy import false
+from sqlalchemy.pool import FallbackAsyncAdaptedQueuePool
 import helpers
 
 from helpers import login_required
@@ -31,6 +33,7 @@ if not os.path.isdir("./images"):
 
 # setting up yolo network
 net = load_model()
+AI_activate = False
 
 # creating global variables
 global camera
@@ -90,7 +93,7 @@ def logout():
 @app.route("/video")
 @login_required
 def video_feed():
-    return Response(helpers.gen_frames(camera, True, net), mimetype="multipart/x-mixed-replace; boundary=frame")
+    return Response(helpers.gen_frames(camera, AI_activate, net), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 
 @app.route("/capture", methods=["POST"])
@@ -100,13 +103,16 @@ def capture():
     return render_template("index.html", camera_number=selected_camera_number, message=message)
 
 
-@app.route("/yolo", methods=["GET"])
+@app.route("/yolo", methods=["POST"])
 @login_required
 def yolo():
-    return Response(helpers.gen_frames(camera, True, net), mimetype="multipart/x-mixed-replace; boundary=frame")
-    
-
-
+    global AI_activate
+    AI_activate = not AI_activate
+    if AI_activate:
+        message = "AI Processing"
+    else:
+        message = ""
+    return render_template("index.html", camera_number=selected_camera_number, message=message)
 
 
 @app.route("/settings")

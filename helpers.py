@@ -3,6 +3,7 @@ import flask
 
 from flask import redirect
 from functools import wraps
+from numpy import diff
 from werkzeug.security import check_password_hash, generate_password_hash 
 from yolo.yolo import yolo_run
 
@@ -11,6 +12,7 @@ def gen_frames(camera, activate_ai, net):
     produce frames for web page using the currently selected camera
     for ip camera use - rtsp://username:password@ip_address:554/user=username_password='password'_channel=channel_number_stream=0.sdp' for local webcam use cv2.VideoCapture(0)
     '''
+    old_photo_time = 0
     while True:
         success, frame = camera.read()  # read the camera frame
         if not success:
@@ -18,7 +20,14 @@ def gen_frames(camera, activate_ai, net):
             break
         else:
             if activate_ai:
-                frame = yolo_run(frame, net)
+                frame, bird, photo_time = yolo_run(frame, net)
+                if bird:
+                    diff = photo_time - old_photo_time 
+                    if diff > 15:
+                        old_photo_time = photo_time
+                        capture_image(camera)
+
+            
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
@@ -29,7 +38,6 @@ def capture_image(camera):
     ''' 
     capture an image of the what the current camera is viewing
     '''
-    time.sleep(0.2) # giving openCV some time to work itself out as two programs can't use the camera at once
     success,img = camera.read()
     if not success:
         return "error"
@@ -39,6 +47,7 @@ def capture_image(camera):
         image_name = now + ".png"
         image_path = os.path.join("./images/", image_name)
         cv2.imwrite(image_path, img)
+        print(f"image successfully saved to {image_path}")
         return f"image saved to {image_path}"
 
 
@@ -166,6 +175,3 @@ def new_pass(userid, newpassword):
         selected_user.hash = newhash
         session.commit()
     return "Password changed successfully"
-
-
-
