@@ -2,6 +2,9 @@
 /bird.db
 /__pycache__
 /flask_session
+#/yolo/
+
+# until training model comes into effect
+/training_model
 /training_model/data/
 /training_model/cifar_net.pth
-/yolo/
