@@ -17,8 +17,8 @@ def yolo_run(img, net):
     output_layer = [layer_name[i - 1] for i in net.getUnconnectedOutLayers()]
     colours = numpy.random.uniform(0, 255, size=(len(classes), 3))
 
-    # img = cv2.imread("./yolo/nmr.jpg")
     img = cv2.resize(img, None, fx=0.4, fy=0.4)
+    # img_normalised = cv2.normalize(img, None, 0, 1.0, cv2.NORM_MINMAX, dtype=cv2.CV_32F)
     height, width, channel = img.shape
 
     blob = cv2.dnn.blobFromImage(img, 0.00392, (416, 416), (0,0,0), True, crop=False)
@@ -33,7 +33,7 @@ def yolo_run(img, net):
             scores = detection[5:]
             class_id = numpy.argmax(scores)
             confidence = scores[class_id]
-            if confidence > 0.5:
+            if confidence > 0.3:
                 center_x = int(detection[0] * width)
                 center_y = int(detection[1] * height)
                 w = int(detection[2] * width)
@@ -49,8 +49,8 @@ def yolo_run(img, net):
     objects = []
     for i in indexes:
         objects.append(classes[class_ids[i]])
-    # print(objects)
-    # print("\n")
+    print(objects)
+    print("\n")
     
     if 'bird' in objects:
         bird = True

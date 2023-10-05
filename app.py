@@ -110,8 +110,10 @@ def yolo():
     AI_activate = not AI_activate
     if AI_activate:
         message = "AI Processing"
+        print("AI RUNNING")
     else:
         message = ""
+        print("AI TERMINATED")
     return render_template("index.html", camera_number=selected_camera_number, message=message)
 
 

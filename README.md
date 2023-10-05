@@ -101,3 +101,12 @@ Packages for AI
 - Pytorch?
 - conda install -c conda-forge matplotlib
 - conda install -c anaconda requests
+
+The AI model used is the Tiny You Only Look Once version 3 (YOLOv3-Tiny). This is currently packaged in the repo but will become a download requirement in future. The AI model is likely to change in future (I am looking to train my own model for Australian birds). 
+
+@article{yolov3,
+  title={YOLOv3: An Incremental Improvement},
+  author={Redmon, Joseph and Farhadi, Ali},
+  journal = {arXiv},
+  year={2018}
+}
