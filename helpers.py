@@ -25,7 +25,7 @@ def gen_frames(camera, activate_ai, net):
                     diff = photo_time - old_photo_time 
                     if diff > 15:
                         old_photo_time = photo_time
-                        capture_image(camera)
+                        capture_image(camera, activate_ai)
 
             
             ret, buffer = cv2.imencode('.jpg', frame)
@@ -34,7 +34,7 @@ def gen_frames(camera, activate_ai, net):
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
 
 
-def capture_image(camera):
+def capture_image(camera, activate_ai):
     ''' 
     capture an image of the what the current camera is viewing
     '''
@@ -44,6 +44,8 @@ def capture_image(camera):
     else:
         now = datetime.datetime.now()
         now = now.strftime("%Y-%m-%d-%H-%M-%S")
+        if activate_ai:
+            now = now + "AI"
         image_name = now + ".png"
         image_path = os.path.join("./images/", image_name)
         cv2.imwrite(image_path, img)

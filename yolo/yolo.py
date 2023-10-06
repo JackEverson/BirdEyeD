@@ -15,13 +15,13 @@ def yolo_run(img, net):
 
     layer_name = net.getLayerNames()
     output_layer = [layer_name[i - 1] for i in net.getUnconnectedOutLayers()]
-    colours = numpy.random.uniform(0, 255, size=(len(classes), 3))
+    # colours = numpy.random.uniform(0, 255, size=(len(classes), 3)) # for multicoloured suround boxes
 
     img = cv2.resize(img, None, fx=0.4, fy=0.4)
-    # img_normalised = cv2.normalize(img, None, 0, 1.0, cv2.NORM_MINMAX, dtype=cv2.CV_32F)
+    img_normalised = cv2.normalize(img, None, 0, 100.0, cv2.NORM_MINMAX, dtype=cv2.CV_32F)
     height, width, channel = img.shape
 
-    blob = cv2.dnn.blobFromImage(img, 0.00392, (416, 416), (0,0,0), True, crop=False)
+    blob = cv2.dnn.blobFromImage(img_normalised, 0.00392, (416, 416), (0,0,0), True, crop=False)
     net.setInput(blob)
     outs = net.forward(output_layer)
 
@@ -49,9 +49,10 @@ def yolo_run(img, net):
     objects = []
     for i in indexes:
         objects.append(classes[class_ids[i]])
-    print(objects)
-    print("\n")
-    
+        for y, j in zip(objects, confidences):
+            print(f"{y}, {j * 100:.2f}%")
+        print("\n")
+
     if 'bird' in objects:
         bird = True
         bird_time = time.time()
@@ -63,8 +64,9 @@ def yolo_run(img, net):
     for i in range(len(boxes)):
         if i in indexes:
             x, y, w, h = boxes[i]
-            label = str(objects)
-            colour = colours[i]
+            label = f"{str(objects)},  {confidences[i] * 100:.2f}%"
+            # colour = colours[i] # for multicoloured suround boxes
+            colour = [200, 0, 0]
             cv2.rectangle(img, (x,y), (x+y, y+h), colour, 2)
             cv2.putText(img, label, (x, y), font, 1, colour, 1)
 

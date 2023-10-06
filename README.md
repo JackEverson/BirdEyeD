@@ -97,8 +97,7 @@ Just a few points about the program that may help:
 
 # Need to add to documentation
 - Quick start guide
-Packages for AI 
-- Pytorch?
+- Packages for AI 
 - conda install -c conda-forge matplotlib
 - conda install -c anaconda requests
 
