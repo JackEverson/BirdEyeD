@@ -67,6 +67,10 @@ or with conda:
 
 `conda install -c conda-forge werkzeug`
 
+`- conda install -c conda-forge matplotlib`
+
+`- conda install -c anaconda requests`
+
 
 ### Cloning respository 
 To clone the respository you just need to run the following command:
@@ -95,11 +99,6 @@ Just a few points about the program that may help:
 - If no camera is attached the program will fail to run as OpenCV will return an empty array
 - images will be saved in the images directory in the project folder
 
-# Need to add to documentation
-- Quick start guide
-- Packages for AI 
-- conda install -c conda-forge matplotlib
-- conda install -c anaconda requests
 
 The AI model used is the Tiny You Only Look Once version 3 (YOLOv3-Tiny). This is currently packaged in the repo but will become a download requirement in future. The AI model is likely to change in future (I am looking to train my own model for Australian birds). 
 
