@@ -125,6 +125,4 @@ The AI model used is the Tiny You Only Look Once version 3 (YOLOv3-Tiny). This i
 }
 
 # TO DO 
-- That 1 that comes up when signing in
-- human photos when AI is on
-
+- YOLO output is very verbose

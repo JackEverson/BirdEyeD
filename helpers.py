@@ -24,7 +24,7 @@ def gen_frames(camera, activate_ai, net):
                 frame, bird, photo_time = yolo_run(frame, net)
                 if bird:
                     diff = photo_time - old_photo_time
-                    if diff > 15:
+                    if diff > 5:
                         old_photo_time = photo_time
                         capture_image(camera, activate_ai)
 

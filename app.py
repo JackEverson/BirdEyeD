@@ -33,6 +33,7 @@ if not os.path.isdir("./images"):
 
 # setting up yolo network
 net = load_model()
+global AI_activate
 AI_activate = False
 
 # creating global variables
@@ -54,7 +55,7 @@ camera = cv2.VideoCapture(selected_camera_number)
 @login_required
 def index():
     id = session.get("user_id")
-    return render_template("index.html", camera_number=selected_camera_number)
+    return render_template("index.html", camera_number=selected_camera_number, AI_activate=AI_activate)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -76,7 +77,7 @@ def login():
             return render_template("login.html", error=error)
 
         session["user_id"] = user.id
-        print(session["user_id"])
+        # print(session["user_id"])
         return redirect("/")
 
     else:  # if GET method
@@ -103,7 +104,7 @@ def video_feed():
 def capture():
     message = helpers.capture_image(camera, False)
     return render_template(
-        "index.html", camera_number=selected_camera_number, message=message
+        "index.html", camera_number=selected_camera_number, message=message, AI_activate=AI_activate
     )
 
 
@@ -119,7 +120,7 @@ def yolo():
         message = ""
         print("AI TERMINATED")
     return render_template(
-        "index.html", camera_number=selected_camera_number, message=message
+        "index.html", camera_number=selected_camera_number, message=message, AI_activate=AI_activate
     )
 
 
