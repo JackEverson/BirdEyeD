@@ -27,7 +27,7 @@ and then run the flask server (where <ip_address> is the local ip address of the
 
 `flask run -h <ip_address>`
 
-You can then type the ip address of the device into a browser on any machine that is attached to the local network.
+You can then type the ip address of the device into a browser on any machine that is attached to the local network. The default username is "sushi" and the default password is "birdeyed"
 
 ## Setup and requirements
 After a fresh install it is good to make sure everything is up to date by running the command:
