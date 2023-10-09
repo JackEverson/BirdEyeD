@@ -7,16 +7,30 @@
 ![King_parrot_saved](https://github.com/JackEverson/bird_eyeD/assets/111256162/ce94735e-bd42-492f-b6fb-817e50ac2dba)
 
 # Welcome to BirdEyeD! 
-This is a project that utilises Python, OpenCV2, and SQLite3 to host a local webpage with a video stream so that images of birds can be captured. The intention is to have it running on small computer (in my case I am using a Raspberry Pi) with an attached webcamera. 
+This is a project that utilises Python, OpenCV2, and SQLite3 to host a local webpage with a video stream so that images of birds can be captured. The intention is to have it running on small computer (in my case I am using a Raspberry Pi) with an attached webcamera. The AI model Tiny-YOLOv3 is utilised through OpenCV2 to allow for the automatic taking of photos without the need for a human user.
 
 This is project is inspired by [BirdNET](https://birdnet.cornell.edu) and the implementation to a Raspberry Pi done by [Core Electronics](https://core-electronics.com.au/projects/bird-calls-raspberry-pi/). 
-I wanted to use a Raspberry Pi and a cheap webcamera to make the project easily accessable and affordable.
 
 # Setup of BirdEyeD
 This project was targeted to run on a Raspberry Pi 4 with 4GB of RAM and a 64GB microsd card (total space occupied after everything was up and running was about 3.4GB, I just wanted to take a lot of pictures). The operating system is Raspberry Pi OS 11 "bullseye". I chose to buy a cheap webcamera for this project but I believe the official Raspberry Pi camera Module v2 should work to (PLEASE NOTE: the Raspberry Pi Camera Module v3 is not compatible with OpenCV2 which this project depends on). Testing was also done with my laptop running Ubuntu v22.04.3 LTS (Jammy Jellyfish) using its build in camera (and the purchased webcamera) and everything worked correctly.
 
+## Quick Start
+Assuming you have all the dependencies and requirements you can clone this repository with:
+
+`git clone https://github.com/JackEverson/BirdEyeD.git`
+
+Change into the project directory:
+
+`cd BirdEyeD`
+
+and then run the flask server (where <ip_address> is the local ip address of the device):
+
+`flask run -h <ip_address>`
+
+You can then type the ip address of the device into a browser on any machine that is attached to the local network.
+
 ## Setup and requirements
-First thing you should always do after a fresh install is to run the command:
+After a fresh install it is good to make sure everything is up to date by running the command:
 
 `sudo apt update && sudo apt upgrade -y`
 
@@ -55,7 +69,7 @@ They can all be installed with the command:
 
 `sudo pip install Flask Flask-Session SQLAlchemy Werkzeug`
 
-or with conda:
+or if you are using conda:
 
 `conda install -c anaconda flask`
 
@@ -79,8 +93,7 @@ To clone the respository you just need to run the following command:
 
 From there you can change into the project directory and should be able to run the web page with the command:
 
-`flask run -h <ip_address_of_device>`
-
+`flask run -h <ip_address>`
 
 # Running BirdEyeD 
 
