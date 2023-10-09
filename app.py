@@ -101,7 +101,7 @@ def video_feed():
 @app.route("/capture", methods=["POST"])
 @login_required
 def capture():
-    message = helpers.capture_image(camera, AI_activate)
+    message = helpers.capture_image(camera, False)
     return render_template(
         "index.html", camera_number=selected_camera_number, message=message
     )

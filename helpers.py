@@ -50,7 +50,7 @@ def capture_image(camera, activate_ai):
         image_name = now + ".png"
         image_path = os.path.join("./images/", image_name)
         cv2.imwrite(image_path, img)
-        print(f"image successfully saved to {image_path}")
+        print(f"image successfully saved to {image_path}, activate_at={activate_ai}")
         return f"image saved to {image_path}"
 
 

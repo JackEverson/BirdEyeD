@@ -27,7 +27,7 @@ and then run the flask server (where <ip_address> is the local ip address of the
 
 `flask run -h <ip_address>`
 
-You can then type the ip address of the device into a browser on any machine that is attached to the local network. The default username is "sushi" and the default password is "birdeyed"
+You can then type the ip address of the device into a browser on any machine that is attached to the local network. The default username is "sushi" and the default password is "birdeyed".
 
 ## Setup and requirements
 After a fresh install it is good to make sure everything is up to date by running the command:
@@ -100,6 +100,8 @@ From there you can change into the project directory and should be able to run t
 A webpage should now be available at the IP address that was used to run flask. Once open you can login with username "sushi" and password "birdeyed". 
 
 PLEASE NOTE: This password should be changed immediately through the settings menu. While it is unlikely (depending who is on your local network) for the webpage to be hacked you should be aware that while this program is running you are essentially offering any camera attached to this computer to your local network. Please be aware of this while operating.  
+
+To capture images you can click on the "Capture Image" button. This button should autofocus so you can conveniently just hit enter to save images. All images are saved as a png file in the images directory in the project file and follow the format year-month-day-hour-minute-second. 
 
 The settings menu can be accessed by pushing the three bars in the top right corner of the webpage and then selecting Settings. If you have multiple camera's attached you can also change your camera selection from this menu. 
 
