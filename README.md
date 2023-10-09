@@ -17,7 +17,7 @@ This project was targeted to run on a Raspberry Pi 4 with 4GB of RAM and a 64GB 
 ## Quick Start
 Assuming you have all the dependencies and requirements you can clone this repository with:
 
-`git clone https://github.com/JackEverson/BirdEyeD.git`
+`git clone -b main https://github.com/JackEverson/BirdEyeD.git`
 
 Change into the project directory:
 
@@ -123,3 +123,8 @@ The AI model used is the Tiny You Only Look Once version 3 (YOLOv3-Tiny). This i
   journal = {arXiv},
   year={2018}
 }
+
+# TO DO 
+- That 1 that comes up when signing in
+- human photos when AI is on
+
