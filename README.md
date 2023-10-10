@@ -6,8 +6,11 @@
 ## Save Images
 ![King_parrot_saved](https://github.com/JackEverson/bird_eyeD/assets/111256162/ce94735e-bd42-492f-b6fb-817e50ac2dba)
 
+## Deploy Tiny-YOLOv3 to capture pictures of birds in your absence
+![Screenshot from 2023-10-11 07-50-16](https://github.com/JackEverson/BirdEyeD/assets/111256162/07905c2d-63a2-4ccb-89bf-7fc4cbba1fb8)
+
 # Welcome to BirdEyeD! 
-This is a project that utilises Python, OpenCV2, and SQLite3 to host a local webpage with a video stream so that images of birds can be captured. The intention is to have it running on small computer (in my case I am using a Raspberry Pi) with an attached webcamera. The AI model Tiny-YOLOv3 is utilised through OpenCV2 to allow for the automatic taking of photos without the need for a human user.
+This is a project that utilises Python, OpenCV2, YOLO, and SQLite3 to host a local webpage with a video stream so that images of birds can be captured. The intention is to have it running on small computer (in my case I am using a Raspberry Pi) with an attached webcamera. The visual AI model Tiny-YOLOv3 is utilised through OpenCV2 to allow for the automatic taking of photos without the need for a human user.
 
 This is project is inspired by [BirdNET](https://birdnet.cornell.edu) and the implementation to a Raspberry Pi done by [Core Electronics](https://core-electronics.com.au/projects/bird-calls-raspberry-pi/). 
 
@@ -93,6 +96,10 @@ To clone the respository you just need to run the following command:
 
 From there you can change into the project directory and should be able to run the web page with the command:
 
+`flask run`
+
+or if you want to access the feed from a different device from the one you are running BirdEyeD on:
+
 `flask run -h <ip_address>`
 
 # Running BirdEyeD 
@@ -101,11 +108,11 @@ A webpage should now be available at the IP address that was used to run flask. 
 
 PLEASE NOTE: This password should be changed immediately through the settings menu. While it is unlikely (depending who is on your local network) for the webpage to be hacked you should be aware that while this program is running you are essentially offering any camera attached to this computer to your local network. Please be aware of this while operating.  
 
-To capture images you can click on the "Capture Image" button. This button should autofocus so you can conveniently just hit enter to save images. All images are saved as a png file in the images directory in the project file and follow the format year-month-day-hour-minute-second. 
+To capture images you can click on the "Capture Image" button (this button should autofocus so you can also just hit enter). All images are saved as a png file in the images directory in the project file and follow the format year-month-day-hour-minute-second. 
 
-The settings menu can be accessed by pushing the three bars in the top right corner of the webpage and then selecting Settings. If you have multiple camera's attached you can also change your camera selection from this menu. 
+To Activate the YOLO simply click the "Activate AI camera" button. Depending on your hosting system this may dramatically reduce the framerate (This is particularly noticable on a Raspberry Pi). All of Tiny-YOLOv3's outputs will now be displayed to the screen using blue boundary boxes. BirdEyeD will only take a photo if a 'bird' object is detected (this photo will not include the blue boundary box). The AI camera mode also has a cooldown of 5 seconds so photo's are not taken too frequently. When the AI saves an image the letters AI will appear at the end of the file name to let you know that it was not taken by a human.
 
-If you select the three bars in the top right corner and then select Video Feed you will see the current feed from the selected camera. You can take a photo at anytime by selecting the 'Capture image' button (this should autofocus so you can also just hit enter). Photo's are stored in the images directory in the project folder and will be named after the date and time they were taken.
+The settings menu can be accessed by pushing the three bars in the top right corner of the webpage and then selecting Settings. Here you can change your password and select a different camera if you have multiple camera's attached to your system.
 
 # Trouble shooting
 
@@ -113,9 +120,10 @@ Just a few points about the program that may help:
 - The default username is "sushi" and the default password is "birdeyed"
 - If no camera is attached the program will fail to run as OpenCV will return an empty array
 - images will be saved in the images directory in the project folder
+- The AI camera is setup to only take photos if a 'bird' object is seen
+- The AI camera has a cooldown of 5 seconds and will not include the blue boundary box in the saved image
 
-
-The AI model used is the Tiny You Only Look Once version 3 (YOLOv3-Tiny). This is currently packaged in the repo but will become a download requirement in future. The AI model is likely to change in future (I am looking to train my own model for Australian birds). 
+The AI model used is the Tiny You Only Look Once version 3 (YOLOv3-Tiny). This is currently packaged in the repo but this is likely to modified and retrained in the future as it seems to have some issues with Australian birds. Information on YOLO is available at: https://pjreddie.com/darknet/yolo/
 
 @article{yolov3,
   title={YOLOv3: An Incremental Improvement},
