@@ -123,7 +123,9 @@ Just a few points about the program that may help:
 - The AI camera is setup to only take photos if a 'bird' object is seen
 - The AI camera has a cooldown of 5 seconds and will not include the blue boundary box in the saved image
 
-The AI model used is the Tiny You Only Look Once version 3 (YOLOv3-Tiny). This is currently packaged in the repo but this is likely to modified and retrained in the future as it seems to have some issues with Australian birds. Information on YOLO is available at: https://pjreddie.com/darknet/yolo/
+# Tiny-YOLO 
+
+The AI model used is the Tiny You Only Look Once version 3 (YOLOv3-Tiny). This is currently packaged in the repo but this is likely to modified and retrained in the future as it seems to be  with Australian birds. Information on YOLO is available at: https://pjreddie.com/darknet/yolo/
 
 @article{yolov3,
   title={YOLOv3: An Incremental Improvement},
@@ -131,3 +133,13 @@ The AI model used is the Tiny You Only Look Once version 3 (YOLOv3-Tiny). This i
   journal = {arXiv},
   year={2018}
 }
+
+# Future Plans
+
+- Retraining YOLOv3-Tiny on captured photos to improve the AI recognition of Australian birds in my area
+- Ability to view captured images through the web browser
+- Adding the ability to record videos
+
+Checkout the dev branch to see what is currently being worked on:
+
+https://github.com/JackEverson/BirdEyeD/tree/dev
