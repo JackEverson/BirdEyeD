@@ -2,7 +2,6 @@ import cv2
 import numpy
 import time
 
-
 def load_model():
     net = cv2.dnn.readNet("./yolo/yolov3-tiny.weights", "./yolo/yolov3-tiny.cfg")
     return net
@@ -18,9 +17,7 @@ def yolo_run(img, net):
     # colours = numpy.random.uniform(0, 255, size=(len(classes), 3)) # for multicoloured suround boxes
 
     img_normalised = cv2.resize(img, None, fx=0.4, fy=0.4)
-    img_normalised = cv2.normalize(
-        img, None, 0, 100.0, cv2.NORM_MINMAX, dtype=cv2.CV_32F
-    )
+    # img_normalised = cv2.normalize(img, None, 0, 100.0, cv2.NORM_MINMAX, dtype=cv2.CV_32F)
     height, width, channel = img.shape
 
     blob = cv2.dnn.blobFromImage(
