@@ -138,7 +138,7 @@ The AI model used is the Tiny You Only Look Once version 3 (YOLOv3-Tiny). This i
 
 - Retraining YOLOv3-Tiny on captured photos to improve the AI recognition of Australian birds in my area
 - Ability to view captured images through the web browser
-- Adding the ability to record videos
+- Adding the ability to record videos 
 
 Checkout the dev branch to see what is currently being worked on:
 
