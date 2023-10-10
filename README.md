@@ -123,6 +123,3 @@ The AI model used is the Tiny You Only Look Once version 3 (YOLOv3-Tiny). This i
   journal = {arXiv},
   year={2018}
 }
-
-# TO DO 
-- YOLO output is very verbose

@@ -2,15 +2,15 @@ import cv2
 import numpy
 import time
 
+
 def load_model():
     net = cv2.dnn.readNet("./yolo/yolov3-tiny.weights", "./yolo/yolov3-tiny.cfg")
     return net
 
 
 def yolo_run(img, net):
-
     classes = []
-    with open("./yolo/coco.names", 'r') as f:
+    with open("./yolo/coco.names", "r") as f:
         classes = [line.strip() for line in f.readlines()]
 
     layer_name = net.getLayerNames()
@@ -18,10 +18,14 @@ def yolo_run(img, net):
     # colours = numpy.random.uniform(0, 255, size=(len(classes), 3)) # for multicoloured suround boxes
 
     img_normalised = cv2.resize(img, None, fx=0.4, fy=0.4)
-    img_normalised = cv2.normalize(img, None, 0, 100.0, cv2.NORM_MINMAX, dtype=cv2.CV_32F)
+    img_normalised = cv2.normalize(
+        img, None, 0, 100.0, cv2.NORM_MINMAX, dtype=cv2.CV_32F
+    )
     height, width, channel = img.shape
 
-    blob = cv2.dnn.blobFromImage(img_normalised, 0.00392, (416, 416), (0,0,0), True, crop=False)
+    blob = cv2.dnn.blobFromImage(
+        img_normalised, 0.00392, (416, 416), (0, 0, 0), True, crop=False
+    )
     net.setInput(blob)
     outs = net.forward(output_layer)
 
@@ -39,8 +43,8 @@ def yolo_run(img, net):
                 w = int(detection[2] * width)
                 h = int(detection[3] * height)
 
-                x = int(center_x - w/2)
-                y = int(center_y - h/2)
+                x = int(center_x - w / 2)
+                y = int(center_y - h / 2)
                 boxes.append([x, y, w, h])
                 confidences.append(float(confidence))
                 class_ids.append(class_id)
@@ -49,11 +53,12 @@ def yolo_run(img, net):
     objects = []
     for i in indexes:
         objects.append(classes[class_ids[i]])
-        for y, j in zip(objects, confidences):
-            print(f"{y}, {j * 100:.2f}%")
-        print("\n")
+        # Uncomment the following 3 lines for object detection output to terminal
+        # for y, j in zip(objects, confidences):
+        #     print(f"{y}, {j * 100:.2f}%")
+        # print("\n")
 
-    if 'bird' in objects:
+    if "bird" in objects:
         bird = True
         bird_time = time.time()
     else:
@@ -67,7 +72,7 @@ def yolo_run(img, net):
             label = f"{str(objects)},  {confidences[i] * 100:.2f}%"
             # colour = colours[i] # for multicoloured suround boxes
             colour = [200, 0, 0]
-            cv2.rectangle(img, (x,y), (x+y, y+h), colour, 2)
+            cv2.rectangle(img, (x, y), (x + y, y + h), colour, 2)
             cv2.putText(img, label, (x, y), font, 1, colour, 1)
 
     return img, bird, bird_time

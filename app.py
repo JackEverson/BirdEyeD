@@ -55,7 +55,9 @@ camera = cv2.VideoCapture(selected_camera_number)
 @login_required
 def index():
     id = session.get("user_id")
-    return render_template("index.html", camera_number=selected_camera_number, AI_activate=AI_activate)
+    return render_template(
+        "index.html", camera_number=selected_camera_number, AI_activate=AI_activate
+    )
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -104,7 +106,10 @@ def video_feed():
 def capture():
     message = helpers.capture_image(camera, False)
     return render_template(
-        "index.html", camera_number=selected_camera_number, message=message, AI_activate=AI_activate
+        "index.html",
+        camera_number=selected_camera_number,
+        message=message,
+        AI_activate=AI_activate,
     )
 
 
@@ -120,7 +125,10 @@ def yolo():
         message = ""
         print("AI TERMINATED")
     return render_template(
-        "index.html", camera_number=selected_camera_number, message=message, AI_activate=AI_activate
+        "index.html",
+        camera_number=selected_camera_number,
+        message=message,
+        AI_activate=AI_activate,
     )
 
 
