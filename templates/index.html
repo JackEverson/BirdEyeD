@@ -13,6 +13,16 @@ Camera {{ camera_number }}
             </div>
         </div>
     </div>
+    {% if AI_activate %}
+    </form>
+    <form action="/yolo" method="post">
+    <div>
+        <button class="btn btn-primary" type="submit">
+            Deactivate AI camera
+        </button>
+    </div>
+    </form>
+    {% else %}
     <form action="/capture" method="post">
     <div>
         <button class="btn btn-primary" type="submit" autofocus>
@@ -20,6 +30,15 @@ Camera {{ camera_number }}
         </button>
     </div>
     </form>
+    <form action="/yolo" method="post">
+    <div>
+        <button class="btn btn-primary" type="submit">
+            Activate AI camera
+        </button>
+    </div>
+    </form>
+    {% endif %}
+
 </body>
     <div>
         <h3>

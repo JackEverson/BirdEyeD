@@ -2,3 +2,4 @@
 /bird.db
 /__pycache__
 /flask_session
+./yolo/__pycache__
