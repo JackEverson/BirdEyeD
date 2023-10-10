@@ -1,4 +1,8 @@
-# BirdEyeD
+# BirdEyeD Dev Branch
+
+# TODO
+
+- Retrain YOLOv3 on bird data
 
 ## Live stream through a local web browser
 ![pigeon](https://github.com/JackEverson/bird_eyeD/assets/111256162/1a3f9870-0683-409c-a038-9da21bf54f25)
