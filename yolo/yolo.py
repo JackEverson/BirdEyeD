@@ -3,7 +3,7 @@ import numpy
 import time
 
 def load_model():
-    net = cv2.dnn.readNet("./yolo/yolov3-tiny.weights", "./yolo/yolov3-tiny.cfg")
+    net = cv2.dnn.readNet("./yolo/yolov3-custom.weights", "./yolo/yolov3-tiny.cfg")
     return net
 
 
@@ -51,11 +51,11 @@ def yolo_run(img, net):
     for i in indexes:
         objects.append(classes[class_ids[i]])
         # Uncomment the following 3 lines for object detection output to terminal
-        # for y, j in zip(objects, confidences):
-        #     print(f"{y}, {j * 100:.2f}%")
-        # print("\n")
+        for y, j in zip(objects, confidences):
+            print(f"{y}, {j * 100:.2f}%")
+        print("\n")
 
-    if "bird" in objects:
+    if len(objects) > 0:
         bird = True
         bird_time = time.time()
     else:
